@@ -1,0 +1,19 @@
+/*
+The CSS rules in this file are specific to the imvPlayer.js library and should not change. Parts of the IMV Player interface can be changed through CSS entered in another file or the page itself.
+*/
+.imv-abs {
+  position:absolute;
+}
+.imv-rel {
+  position:relative;
+}
+.imv-crop {
+  overflow:hidden;
+}
+.imv-full {
+  height:100%;
+  width:100%;
+}
+.imv-video {
+  position:relative;
+}

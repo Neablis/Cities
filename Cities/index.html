@@ -1,0 +1,161 @@
+ <!DOCTYPE html>
+ <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Cities</title>
+		
+		<link rel="stylesheet" href="css/imvPlayer.css" />
+		<link rel="stylesheet" href="css/LikeVintage_Bridges.css" />
+		
+		<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.8.17.custom.min.js"></script>
+		<script type="text/javascript" src="js/imvPlayer.js"></script>
+		
+		<script type="text/javascript" src="data/bridges.js"></script>
+		
+		<script type="text/javascript">
+		
+		(function($) {
+			var debug = true;
+			
+			document.documentElement.style.overflow = 'hidden';	 // firefox, chrome
+		
+			$(function() {
+			
+				var container = $('#container');
+				container.height($(window).height() - 108);
+				
+				var driveSource = [
+					{ src: 'data/drive.webm', type: 'video/webm' },
+					{ src: 'data/drive.mp4', type: 'video/mp4' },
+					{ src: 'data/drive.ogv', type: 'video/ogg' }
+				];
+				
+				var memorySource = [
+					{ src: 'data/memories.webm', type: 'video/webm' },
+					{ src: 'data/memories.mp4', type: 'video/mp4' },
+					{ src: 'data/memories.ogv', type: 'video/ogg' }
+				];
+			
+				var drivePlayer = new Imv.Player(container, driveSource);
+				var memoryPlayer = new Imv.Player(container, memorySource);
+				memoryPlayer.mute(true);
+				
+				memoryPlayer.useMouse(true);
+				
+				var config = new Imv.Config({
+					keyFrames: keyFrames
+				});
+				
+				var showCaptions = false;
+				
+				var imv = new Imv.Imv({
+					players: [drivePlayer, memoryPlayer],
+					
+					play: {
+						object: $('#play')
+					},
+					
+					scrubber: {
+						object: $('#slider-front')
+					},
+					
+					time: {
+						object: $('#time')
+					},
+					config: config,
+					syncRate: 3,
+					layoutRate: 20
+				});
+				
+				$('#cc').click(function(evt) {
+					showCaptions = !showCaptions;
+					
+					if (showCaptions) {
+						$('#cc').css('background-color', '#CCCCCC');
+					} else {
+						$('#cc').css('background-color', '');
+					}
+					evt.preventDefault();
+					return false;
+				});
+				
+				function filterCaptions() {
+					var time = drivePlayer.video.currentTime;
+				
+					$('#caption li').css('display', 'none').filter(function() {
+						var l = $(this);
+						var s = l.attr('start');
+						var e = l.attr('end');
+						return showCaptions && s <= time && e >= time;
+					}).css('display', 'list-item');
+				
+					setTimeout(filterCaptions, 100);
+				}
+				
+				setTimeout(filterCaptions, 100);
+				
+				if (debug) {
+					window.drivePlayer = drivePlayer;
+					window.memoryPlayer = memoryPlayer;
+					window.config = config;
+				}
+			});
+		})(jQuery);
+
+		</script>
+	</head>
+	<body>
+		  <div id="header">
+			<div id="LogoTitle">
+			  <img id="logo" alt="Logo" src="images/logo.jpeg" />
+			  <div>Like Vintage<br/>Cities</div>
+			</div>
+			<div id="controls">
+				<form>
+					<input type="button" value="Play" id="play"/>
+					<div id="slider-back"><div id="slider-front"></div></div>
+					<div id="time">0:00</div>
+					<input type="button" value="CC" id="cc"/>
+				</form>
+				<div id="caption" style="">
+					<ul>
+						<li start="69" end="72">Did I die</li>
+						<li start="71" end="76">Did I die in your arms that day</li>
+						<li start="75" end="78">There's a truth in what they claim</li>
+						<li start="77" end="80">A truth in what they say</li>
+						<li start="79" end="82">There's a point to it all</li>
+						
+						<li start="82" end="85">So you can break me down</li>
+						<li start="84" end="89">Yeah by all means turn me inside out</li>     
+						<li start="88" end="94">Make me bleed out my every sin</li>
+				  
+						<li start="95" end="101">And somewhere in time</li>
+						<li start="100" end="102">I lost my mind</li>
+						<li start="102" end="104">Take me back to the place I know</li>
+						<li start="103" end="106">Back to the place I know</li>
+						<li start="105" end="108">Take me back to the place I knew before</li>
+						
+						<li start="109" end="114">And somewhere I'll find</li>
+						<li start="113" end="115">That space so divine</li>
+						<li start="115" end="117">Right back to the place I know</li>
+						<li start="116" end="119">Back to the place I know</li>
+						<li start="118" end="122">Right back to the place I knew before</li>
+				  
+						<li start="148" end="151"><i>(Where are you now)</i></li>
+						<li start="150" end="153">I've been waiting for too long</li>
+						<li start="153" end="156"><i>(Where are you now)</i></li>
+						<li start="157" end="160">And I've been waiting for too long</li>
+					</ul>
+				</div>	
+			</div>	
+			<a href="project.html" class="headerLink" target="_blank">The Project</a>
+			<a href="band.html" class="headerLink" target="_blank">The Band</a>
+			  <a href="credits.html" class="headerLink" target="_blank">Credits</a>
+		  </div>
+		  <div id="container"></div>
+		  <div id="instructions">
+			When the second video comes up, click and drag in the video to look around.
+		  </div>
+	</body>
+</html>
